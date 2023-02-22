@@ -217,42 +217,67 @@ function transferCrossChain(
   }
   ```
  
+## `Handling a cross-chain request`
+
+**handleRequestFromSource function:-**
+
+This function is called by the Gateway contract on the destination chain, which is triggered when a cross-chain transfer request is sent by our contract on the source chain. This function receives several parameters, including the source contract address, the payload, the source chain ID, and the source chain type.
+
+1. **srcContractAddress**: A bytes array that represents the address of the contract on the source chain that initiated the cross-chain transfer request.
+
+2. **payload**: A bytes array that contains information about the NFTs that are being transferred, including the recipient's address, NFT IDs, amounts, and additional data.
+
+3. **srcChainId**: A string that represents the ID of the source chain from which the cross-chain transfer request originated.
+
+4. **srcChainType**: An unsigned 64-bit integer that represents the type of the source chain from which the cross-chain transfer request originated.
+
+he function first checks that the call is made only by the Gateway contract and that the request is received from our contract on the source chain. If the conditions are not met, the function will revert the transaction.
+
+The payload that was sent with the cross-chain transfer request contains information about the NFTs that are being transferred, such as the recipient's address, the NFT IDs, the amounts, and any additional data. The function decodes the payload into a TransferParams struct.
+
+After decoding the payload, the function uses the _mintBatch function of the ERC-1155 contract from the OpenZeppelin library to mint the NFTs to the recipient on the destination chain. The function converts the address of the recipient from bytes to an address format using the toAddress function provided in the CrossTalkUtils library.
+
+Finally, the function returns the source chain ID and source chain type in encoded bytes.
+
+```sh
+function handleRequestFromSource(
+  bytes memory srcContractAddress,
+  bytes memory payload,
+  string memory srcChainId,
+  uint64 srcChainType
+) external override returns (bytes memory) {
+  require(msg.sender == address(gatewayContract));
+    require(
+    keccak256(srcContractAddress) == 
+        keccak256(ourContractOnChains[srcChainType][srcChainId])
+    );
+
+  TransferParams memory transferParams = abi.decode(payload, (TransferParams));
+    _mintBatch(
+        CrossTalkUtils.toAddress(transferParams.recipient), 
+        transferParams.nftIds, 
+        transferParams.nftAmounts, 
+        transferParams.nftData
+    );
+
+  return abi.encode(srcChainId, srcChainType);
+}
+```
 ## `Handling the acknowledgement received from destination chain`
 
-**handleCrossTalkAck function:-**
+**handleCrossTalkAck:-**
 
-This function handles the acknowledgement sent by the destination chain to the source chain after a successful cross-chain communication. The function takes three parameters: the event identifier, a boolean array of execution flags, and a byte array of execution data. It is an external view function and is marked as an override of a parent contract's function.
+The handleCrossTalkAck function is a public function that needs to be implemented in the contract to satisfy the ICrossTalkApplication interface.
+The function takes three parameters: **eventIdentifier**, **execFlags**, and **execData** . However, since we are only implementing an empty function, we do not need to use these parameters.
 
-The function first checks that the event identifier passed in as the first parameter matches the lastEventIdentifier variable, which is a state variable tracking the most recent cross-chain communication event. If the event identifier does not match, the function will revert.
+The handleCrossTalkAck function does not perform any operation on the contract or on the blockchain. It is implemented as an empty function and only serves as a placeholder to satisfy the interface requirements.
 
-Next, the function decodes the first element of the execData array, which is assumed to be a byte array. The decoded bytes are then further decoded as a tuple of a string and a uint64, representing the chain ID and chain type of the source chain that initiated the cross-chain communication.
-
-After decoding the execution data, the function emits two events. The first event is an **ExecutionStatus** event that emits the event identifier and the first element of the execFlags array as parameters. The second event is a **ReceivedSrcChainIdAndType** event that emits the chain type and chain ID of the source chain as parameters.
-
-1. **if the execution was successful on the destination chain:**
-    
-    We will get [true] in execFlags and [abi.encode(abi.encode(sourceChainType, sourceChainId))] in execData as we sent this as return value in handleRequestFromSource function.
-    
-2. **If the execution failed on the destination chain:**
-    
-    We will get [false] in execFlags and [errorBytes] in execData where error bytes correspond to the error that was thrown on the destination chain contract
+Therefore, the handleCrossTalkAck function should be implemented with an empty body as shown in the code provided.
 
 ```sh
 function handleCrossTalkAck(
-    uint64 eventIdentifier,
-    bool[] memory execFlags,
-    bytes[] memory execData
-  ) external view override {
-    require(lastEventIdentifier == eventIdentifier);
-		bytes memory _execData = abi.decode(execData[0], (bytes));
-
-    (string memory chainID, uint64 chainType) = abi.decode(
-      _execData,
-      (string, uint64)
-    );
-		
-    emit ExecutionStatus(eventIdentifier, execFlags[0]);
-	
-    emit ReceivedSrcChainIdAndType(chainType, chainID);
-  }
-  ```
+  uint64, //eventIdentifier,
+  bool[] memory, //execFlags,
+  bytes[] memory //execData
+) external view override {}
+```
