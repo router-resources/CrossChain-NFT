@@ -49,9 +49,9 @@ npm start
 - [🏗 Backend](#Solidity, Router Cross-Talk Library)
   - [`Initiating the Contract`](#Initiating-the-Contract)
   - [`Creating state variables and the constructor`](#Creating-state-variables-and-the-constructor)
-  - [`Sending a message to the destination chain`](#Sending-a-message-to-the-destination-chain)
-  - [`Handling a crosschain request`](#Handling-a-crosschain-request)
-  - [`Handling the acknowledgement received from destination chain`](#Handling-the-acknowledgement-received-from-destination-chain)
+  - [`Setting up the Destination Contract on the Source Contract`](#Setting-up-the-Destination-Contract-on-the-Source-Contract)
+  - [`Transferring an NFT from a source chain to a destination chain`](#Transferring-an-NFT-from-a-source-chain-to-a-destination-chain)
+  - [`Handling a cross-chain request`](#Handling-a-cross-chain-request)
   
 # 🏗 Frontend
 
