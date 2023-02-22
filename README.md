@@ -100,9 +100,9 @@ The smart contract also defines a struct TransferParams which includes the follo
 
 1. **nftIds** - an array of uint256 values which represent the IDs of the NFTs to be transferred.
 
-2. **nftAmounts** - an array of uint256 values which represent the amounts of each NFT to be transferred.
+2. **nftAmounts** -  an array of amounts of the respective NFT Ids to be transferred to the recipient on the destination chain..
 
-3. **nftData** - a bytes variable which holds additional data related to the NFT transfer.
+3. **nftData** - a bytes variable which holds additional data related to the NFT transfer.You can send 0x00 if you don’t want to send any data while minting the NFT.
 
 4. **recipient** - a bytes variable which holds the address of the recipient of the NFT transfer.
 
