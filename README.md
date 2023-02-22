@@ -1,8 +1,8 @@
-# `Ping Pong`
+# `CrossChain NFT`
 
-> Effortlessly Send and Receive Messages across Blockchains with Ping-Pong Dapp Built with ReactJS and Router Cross-Talk.
+> Effortlessly transfer NFT's from one chain to another. Made using Router Cross-Talk.
 
-🚀DEMO: https://ping-pong-9f9af.web.app/
+🚀DEMO: [Link to be given]
 
 This project is built with [Router CrossTalk](https://dev.routerprotocol.com/crosstalk-library/overview/introduction)
 
@@ -10,7 +10,7 @@ Router Protocol is a solution introduced to address the issues hindering the usa
 
 Please check the [official documentation of Router Protocol](https://www.routerprotocol.com/) 
 
-![Ping-Pong](https://firebasestorage.googleapis.com/v0/b/ping-pong-9f9af.appspot.com/o/Demo2.gif?alt=media&token=43933f12-3b85-4dcb-884c-e936a9d704ff)
+![CrossChain NFT](Demo gif to placed here)
 
 # ⭐️ `Star us`
 
@@ -22,10 +22,10 @@ If you need help or have other some questions - don't hesitate to write in our d
 
 # 🚀 `Quick Start`
 
-📄 Clone or fork `ping-pong`:
+📄 Clone or fork `CrossChain NFT`:
 
 ```sh
-git clone https://github.com/protocol-designer/ping-pong.git
+git clone https://github.com/protocol-designer/CrossChain-NFT.git
 ```
 
 💿 Install all dependencies:
@@ -44,11 +44,7 @@ npm start
 - [🚀 Quick Start](#-quick-start)
 - [🧭 Table of contents](#-table-of-contents)
 - [🏗 Frontend](#React JS, Ether.js)
-  - [`Basic imports and Setting up Providers`](#Basic-imports-and-Setting-up-Providers)
-  - [`Creating a WalletConnect Button`](#Creating-a-WalletConnect-Button)
-  - [`Sending message to the Desination Chain`](#Sending-message-to-the-Desination-Chain)
-  - [`Fetching Received message from Destination Chain`](#Fetching-Received-message-from-Destination-Chain)
-  - [`Fetching Acknowledgement from the source chain`](#Fetching-Acknowledgement-from-the-source-chain)
+  
  
 - [🏗 Backend](#Solidity, Router Cross-Talk Library)
   - [`Initiating the Contract`](#Initiating-the-Contract)
@@ -59,182 +55,6 @@ npm start
   
 # 🏗 Frontend
 
-### `Basic imports and Setting up Providers`
-
-First, we import the ethers library from the Ethereum JavaScript library ethers.js. ethers is a JavaScript library that provides a range of tools and utilities for interacting with Ethereum networks. Developers can use ethers to create wallets, manage accounts, sign transactions, deploy smart contracts, and more, all using JavaScript.
-
-```sh
-import { ethers } from 'ethers';
-```
-
-Next, we declares an array called abi that represents the ABI (Application Binary Interface) definition for a smart contract on the Ethereum network. The ABI specifies how to interact with the smart contract by defining the format of its data and function calls.
-
-```sh
-const abi=[<paste your ABI here>]
-```
-
-The next step is to declare three instances of ethers.providers class: Web3Provider and two JsonRpcProvider instances.
-
-Web3Provider is used to interact with the Ethereum network through the user's browser wallet. JsonRpcProvider is used to connect to the Ethereum network using an RPC (Remote Procedure Call) endpoint.
-
-provider instance uses the window.ethereum object to connect to the user's browser wallet. provider1 and provider2 instances connect to the Polygon Mumbai and Avalanche Fuji testnets respectively using https endpoints.
-
-```sh
-const provider = new ethers.providers.Web3Provider(window.ethereum);
-const provider1 = new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/polygon_mumbai");
-const provider2= new ethers.providers.JsonRpcProvider("https://rpc.ankr.com/avalanche_fuji")
-```
-
-### `Creating a WalletConnect Button`
-
-The code creates a button with an onClick event listener. When the button is clicked, the code checks if the MetaMask browser extension is installed in the user's browser.
-
-
-![Ping-Pong](https://firebasestorage.googleapis.com/v0/b/ping-pong-9f9af.appspot.com/o/connect%20wallet.png?alt=media&token=997a5d0d-a05f-4117-8ecb-17d45f6f4c69)
-
-
-If MetaMask is detected, the code tries to request access to the user's Ethereum accounts by calling the eth_requestAccounts method using the window.ethereum object. If the user approves the request, their account address is displayed in an alert.
-
-If MetaMask is not detected, the user is alerted that it is not installed
-
-```sh
-<button onClick={async()=>{
-         
-         if(window.ethereum) {
-           console.log('detected');
-     
-           try {
-             const accounts = await window.ethereum.request({
-               method: "eth_requestAccounts",
-             });
-             alert(accounts[0])
-       
-           } catch (error) {
-             console.log('Error connecting...');
-           }
-     
-         } else {
-           alert('Meta Mask not detected');
-         }
-      
-   }}>
-     ----Some Text----
-     </button> 
-  ```
-
-## `Sending message to the Desination Chain`
-
-This code creates a button with an onClick event listener. When the button is clicked, it uses the provider object to get the signer and creates a new ethers.Contract instance with the contractAddress, abi, and signer parameters.
-
-The code then calls the pingDestination() function of the contract with the given parameters. This function is a part of the CrossTalk library, and it sends a message from the source chain to the destination chain.
-
-
-![Ping-Pong](https://firebasestorage.googleapis.com/v0/b/ping-pong-9f9af.appspot.com/o/send.png?alt=media&token=019e5d27-a54b-41a7-beb4-c0b5c63e2e7d)
-
-
-The pingDestination() function takes several parameters, as per its signature defined. You can checkout its signature here [`Sending a message to the destination chain`](#Sending-a-message-to-the-destination-chain). 
-
-```sh
-<button type="button" class="btn btn-success" onClick={async () => {
-	
-         const signer = provider.getSigner();
-         const contractAddress = "0x9fF2c6D8bFf3b87538A156Ea1a768ec5A2d55B32";
-	 const contract = new ethers.Contract(
-                                contractAddress,
-                                abi,
-                                signer
-                            );
-
-        contract.pingDestination(0, "43113", 200000, 200000, "0xf7015AD80B60EA4A9e12d90ff00D68fAa8e08df4",
-			message, 1000000000000).then(() => {
-
-                            })
-
-
-	}}>Send Message</button>
-```
-## `Fetching Received message from Destination Chain`
-
-This code defines a button that is used to fetch the received message on the destination chain. First, it fetches the current request ID corresponding to the message sent from the source chain by calling the currentRequestId function of the smart contract deployed on the Polygon Mumbai network using the provider1 provider.
-
-Then, it calls the pingFromSource function of the smart contract deployed on the Avalanche Fuji network using the provider2 provider and passing in the current request ID and other necessary arguments based on the function's signature.You can checkout the signature of the function here [`Handling a crosschain request`](#Handling-a-crosschain-request).
-
-
-![Ping-Pong](https://firebasestorage.googleapis.com/v0/b/ping-pong-9f9af.appspot.com/o/recieve%20message.png?alt=media&token=1f5dbb88-4e97-4be4-a9ea-2185c192c02a)
-
-
-
-```sh
- <button onClick={async () => {
-                           
-           const contractAddress1 = "0x9fF2c6D8bFf3b87538A156Ea1a768ec5A2d55B32";
-
-
-           const contract1 = new ethers.Contract(
-                                contractAddress1,
-                                abi,
-                                provider1
-                            )
-           const data = await contract1.currentRequestId();
-
-           setReq(data)
-
-
-           const contractAddress = "0xf7015AD80B60EA4A9e12d90ff00D68fAa8e08df4";
-
-           const contract = new ethers.Contract(
-                                contractAddress,
-                                abi,
-                                provider2
-                            );
-
-          contract.pingFromSource(0, "80001", req).then((data) => {
-
-                              // do something
-			      
-                            }).catch(() => {
-                                alert('connect to Fuji Network')
-                            })
-
-}}>Message Recieved</button>
-````
-
-## `Fetching Acknowledgement from the source chain`
-
-The button when clicked , first, it fetches the current request ID corresponding to the message sent from the smart contract deployed on the source chain by calling the currentRequestId() function of the contract deployed on the source chain.
-
-Then, it calls the ackFromDestination() function of the smart contract deployed on the source chain, passing in the request ID as an argument.
-
-
-![Ping-Pong](https://firebasestorage.googleapis.com/v0/b/ping-pong-9f9af.appspot.com/o/Ack.png?alt=media&token=6a2f6d8e-0439-412e-99e4-273c7695f404)
-
-
-
-Once the promise gets resolved, then() function is called, allowing you to perform some action with the data returned from the acknowledgement.
-
-If an error occurs, the catch() function is called and an alert is displayed, reminding the user to connect to the Mumbai Network.
-
-```sh
-<button onClick={
-
-          const contractAddress = "0x9fF2c6D8bFf3b87538A156Ea1a768ec5A2d55B32";
-
-          const contract = new ethers.Contract(
-                                contractAddress,
-                                abi,
-                                provider1
-                            );
-	  const data = await contract.currentRequestId(); setReq(data)
-          contract.ackFromDestination(req).then((data) => {
-
-                              // do something
-			      
-                            }).catch(() => {
-                                alert('connect to Mumbai Network')
-                            })
-}>Acknowledgement</button>
-```
-`
 
 # 🏗 Backend
   
