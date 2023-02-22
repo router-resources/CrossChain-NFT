@@ -52,6 +52,9 @@ npm start
   - [`Setting up the Destination Contract on the Source Contract`](#Setting-up-the-Destination-Contract-on-the-Source-Contract)
   - [`Transferring an NFT from a source chain to a destination chain`](#Transferring-an-NFT-from-a-source-chain-to-a-destination-chain)
   - [`Handling a cross-chain request`](#Handling-a-cross-chain-request)
+  - [`Handling the acknowledgement received from destination chain`](#Handling-the-acknowledgement-received-from-destination-chain)
+
+
   
 # 🏗 Frontend
 
