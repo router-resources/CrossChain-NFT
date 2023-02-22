@@ -113,7 +113,7 @@ The constructor of the smart contract takes three parameters:
 2. **gatewayAddress** - an address variable which holds the address of the gateway contract.
 
 3. **_destGasLimit** - a uint64 variable which indicates the amount of gas required to execute the function that will handle cross-chain requests on the destination chain.
-4. 
+
 The smart contract extends the ERC1155 standard and includes all the required functions such as balanceOf, safeTransferFrom, setApprovalForAll, and others.
 
 ```sh
