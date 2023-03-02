@@ -43,9 +43,6 @@ npm start
 # 🧭 `Table of contents`
 - [🚀 Quick Start](#-quick-start)
 - [🧭 Table of contents](#-table-of-contents)
-- [🏗 Frontend](#React JS, Ether.js)
-  
- 
 - [🏗 Backend](#Solidity, Router Cross-Talk Library)
   - [`Initiating the Contract`](#Initiating-the-Contract)
   - [`Creating state variables and the constructor`](#Creating-state-variables-and-the-constructor)
