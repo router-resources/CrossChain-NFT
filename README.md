@@ -1,6 +1,6 @@
 # `CrossChain NFT`
 
-> Effortlessly transfer NFT's tokens from one chain to another. Made using Router Cross-Talk.
+> Effortlessly transfer NFT's from one chain to another. Made using Router Cross-Talk.
 
 This project is built with [Router CrossTalk](https://dev.routerprotocol.com/crosstalk-library/overview/introduction)
 
